@@ -1,0 +1,23 @@
+[
+    {
+        "id": "1b9f578ab22b904c",
+        "type": "function",
+        "z": "70c611a8a26fc52c",
+        "name": "function 2",
+        "func": "msg.payload = {\n    \"content\": msg.payload.output.generic[0].text,\n    'type':\"voice\",\n    'chatId':msg.params.session_id\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 660,
+        "wires": [
+            [
+                "eb2525d6ca188a3a",
+                "ca33f15f052aba5c"
+            ]
+        ]
+    }
+]

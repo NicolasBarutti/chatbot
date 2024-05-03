@@ -1,0 +1,402 @@
+[
+    {
+        "id": "687aa29dbe18d469",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "e96a57ddf85514a2",
+        "type": "telegram receiver",
+        "z": "687aa29dbe18d469",
+        "name": "",
+        "bot": "41729042d3c580c0",
+        "saveDataDir": "",
+        "filterCommands": false,
+        "x": 90,
+        "y": 400,
+        "wires": [
+            [
+                "aaaebc668bbd89f4",
+                "cab217913b69dffb"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "6c203cfabb833218",
+        "type": "telegram sender",
+        "z": "687aa29dbe18d469",
+        "name": "",
+        "bot": "41729042d3c580c0",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 790,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5d1f6a25cdd8cd62",
+        "type": "watson-text-to-speech",
+        "z": "687aa29dbe18d469",
+        "name": "TTS",
+        "lang": "pt-BR",
+        "langhidden": "pt-BR",
+        "langcustom": "NoCustomisationSetting",
+        "langcustomhidden": "",
+        "voice": "pt-BR_IsabelaV3Voice",
+        "voicehidden": "",
+        "format": "audio/wav",
+        "password": "",
+        "apikey": "fQ3c84WWlXIwQNN0N-7Ht1PBECxq0DUPLuT54HZt8kXL",
+        "payload-response": true,
+        "service-endpoint": "https://api.au-syd.text-to-speech.watson.cloud.ibm.com/instances/24a04764-712d-4edc-904b-28be2600d5ca",
+        "x": 410,
+        "y": 580,
+        "wires": [
+            [
+                "5e3450f16fc7f690",
+                "152a23fb1c055a4d"
+            ]
+        ]
+    },
+    {
+        "id": "b58818c693912a18",
+        "type": "watson-speech-to-text",
+        "z": "687aa29dbe18d469",
+        "name": "STT",
+        "alternatives": 1,
+        "speakerlabels": true,
+        "smartformatting": false,
+        "lang": "pt-BR",
+        "langhidden": "pt-BR",
+        "langcustom": "NoCustomisationSetting",
+        "langcustomhidden": "",
+        "custom-weight": "0.5",
+        "band": "BroadbandModel",
+        "bandhidden": "",
+        "keywords": "",
+        "keywords-threshold": "0.5",
+        "word-confidence": false,
+        "password": "",
+        "apikey": "N6mKMaput6voq3jKu3ow7vsP_3Z4RpUP6YV2iSUKsz0X",
+        "payload-response": true,
+        "streaming-mode": false,
+        "streaming-mute": true,
+        "auto-connect": false,
+        "discard-listening": false,
+        "disable-precheck": false,
+        "service-endpoint": "https://api.us-south.speech-to-text.watson.cloud.ibm.com/instances/02e71836-8868-4e3e-b533-0962b3ad59a9",
+        "x": 410,
+        "y": 260,
+        "wires": [
+            [
+                "a30a5c025ce3400b",
+                "1ff0c6874240024d"
+            ]
+        ]
+    },
+    {
+        "id": "4993239399f2e9b2",
+        "type": "function",
+        "z": "687aa29dbe18d469",
+        "name": "function 1",
+        "func": "msg.params = {\n    'session_id' : msg.payload.chatId\n}\nmsg.payload = msg.payload.weblink;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 260,
+        "wires": [
+            [
+                "b58818c693912a18",
+                "65ab77e2513b3ab2"
+            ]
+        ]
+    },
+    {
+        "id": "a30a5c025ce3400b",
+        "type": "function",
+        "z": "687aa29dbe18d469",
+        "name": "ProcOUT STT",
+        "func": "msg.payload = {\n    'content':msg.payload,\n    'type':'message',\n    'chatId': msg.params.session_id\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 260,
+        "wires": [
+            [
+                "6c203cfabb833218",
+                "f02f1dfc71a75293"
+            ]
+        ]
+    },
+    {
+        "id": "98ae923a00da2de0",
+        "type": "function",
+        "z": "687aa29dbe18d469",
+        "name": "function 3",
+        "func": "msg.params ={\n    'session_id': msg.payload.chatId\n}\nmsg.payload = msg.payload.content;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 580,
+        "wires": [
+            [
+                "5d1f6a25cdd8cd62",
+                "33318ed23e99d243"
+            ]
+        ]
+    },
+    {
+        "id": "5e3450f16fc7f690",
+        "type": "function",
+        "z": "687aa29dbe18d469",
+        "name": "function 4",
+        "func": "msg.payload = {\n    'chatId': msg.params.session_id, \n    'type': 'voice',\n    'content': msg.payload,\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 580,
+        "wires": [
+            [
+                "6c203cfabb833218",
+                "98c09ca55598c71d"
+            ]
+        ]
+    },
+    {
+        "id": "aaaebc668bbd89f4",
+        "type": "switch",
+        "z": "687aa29dbe18d469",
+        "name": "",
+        "property": "payload.type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "voice",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "message",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "animation",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 310,
+        "y": 400,
+        "wires": [
+            [
+                "4993239399f2e9b2"
+            ],
+            [
+                "98ae923a00da2de0"
+            ],
+            [
+                "f7fc7e683072565e"
+            ]
+        ]
+    },
+    {
+        "id": "cab217913b69dffb",
+        "type": "debug",
+        "z": "687aa29dbe18d469",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 60,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "65ab77e2513b3ab2",
+        "type": "debug",
+        "z": "687aa29dbe18d469",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "1ff0c6874240024d",
+        "type": "debug",
+        "z": "687aa29dbe18d469",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "f02f1dfc71a75293",
+        "type": "debug",
+        "z": "687aa29dbe18d469",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "33318ed23e99d243",
+        "type": "debug",
+        "z": "687aa29dbe18d469",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "152a23fb1c055a4d",
+        "type": "debug",
+        "z": "687aa29dbe18d469",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "98c09ca55598c71d",
+        "type": "debug",
+        "z": "687aa29dbe18d469",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "f7fc7e683072565e",
+        "type": "function",
+        "z": "687aa29dbe18d469",
+        "name": "function 5",
+        "func": "msg.payload = {\n    'content': 'GIF legal ',\n    'type' : 'message',\n    'chatId': msg.payload.chatId\n\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 460,
+        "wires": [
+            [
+                "6c203cfabb833218",
+                "26a1031627922d27"
+            ]
+        ]
+    },
+    {
+        "id": "26a1031627922d27",
+        "type": "debug",
+        "z": "687aa29dbe18d469",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "41729042d3c580c0",
+        "type": "telegram bot",
+        "botname": "meu_1tspj_bot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    }
+]
